@@ -210,7 +210,7 @@ class BIOnlineGeneration():
         
         # loop throungh all candidates frame to get best match
         for candidate_path in all_candidate_path:
-            candidate_landmark = self.landmarks_record[candidate_path].astype(np.float32)
+            candidate_landmark = self.landmarks_record[os.path.basename(candidate_path)].astype(np.float32)
             candidate_distance = total_euclidean_distance(candidate_landmark, this_landmark)
             if candidate_distance < min_dist:
                 min_dist = candidate_distance
