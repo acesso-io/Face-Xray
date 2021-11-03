@@ -14,7 +14,7 @@ import tqdm
 
 def name_resolve(path):
     name = os.path.splitext(os.path.basename(path))[0]
-    vid_id, frame_id = name.split('_')[0:2]
+    vid_id, frame_id = name, name
     return vid_id, frame_id 
     
 def total_euclidean_distance(a,b):
