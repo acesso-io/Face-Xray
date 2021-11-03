@@ -201,7 +201,8 @@ class BIOnlineGeneration():
         min_dist = 99999999
         
         # random sample 5000 frame from all frams:
-        all_candidate_path = random.sample( self.data_list, k=5000) 
+        sample_size = min(5000, len(self.data_list))
+        all_candidate_path = random.sample(self.data_list, k=sample_size)
         
         # filter all frame that comes from the same video as background face
         all_candidate_path = filter(lambda k:name_resolve(k)[0] != vid_id, all_candidate_path)
