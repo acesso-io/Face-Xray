@@ -58,9 +58,8 @@ def random_erode_dilate(mask, ksize=None):
 
 # borrow from https://github.com/MarekKowalski/FaceSwap
 def blendImages(src, dst, mask, featherAmount=0.2):
-   
-    maskIndices = np.where(mask != 0)
-    
+    maskIndices = computeMaskIndices(src, dst, mask)
+
     src_mask = np.ones_like(mask)
     dst_mask = np.zeros_like(mask)
 
@@ -84,13 +83,22 @@ def blendImages(src, dst, mask, featherAmount=0.2):
 
     return composedImg, composedMask
 
+def computeMaskIndices(src, dst, mask):
+    maskIndices = np.where(mask != 0)
+
+    maxSize = min(src.shape[0], dst.shape[0])
+    maskIndices[0][maskIndices[0] >= maxSize] = maxSize - 1
+
+    maxSize = min(src.shape[1], dst.shape[1])
+    maskIndices[1][maskIndices[1] >= maxSize] = maxSize - 1
+
+    return maskIndices
 
 # borrow from https://github.com/MarekKowalski/FaceSwap
 def colorTransfer(src, dst, mask):
     transferredDst = np.copy(dst)
-    
-    maskIndices = np.where(mask != 0)
-    
+
+    maskIndices = computeMaskIndices(src, dst, mask)
 
     maskedSrc = src[maskIndices[0], maskIndices[1]].astype(np.int32)
     maskedDst = dst[maskIndices[0], maskIndices[1]].astype(np.int32)
